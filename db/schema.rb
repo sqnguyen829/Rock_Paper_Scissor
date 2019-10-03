@@ -12,22 +12,18 @@
 
 ActiveRecord::Schema.define(version: 2019_10_01_192147) do
 
-  create_table "opponents", force: :cascade do |t|
-    t.string "status"
-    t.string "name"
-    t.string "choice"
-  end
-
   create_table "scoreboards", force: :cascade do |t|
     t.integer "user_id"
-    t.integer "opponent_id"
+    t.integer "status_id"
     t.integer "streak"
+  end
+
+  create_table "statuses", force: :cascade do |t|
+    t.string "name"
   end
 
   create_table "users", force: :cascade do |t|
     t.string "name"
-    t.string "status"
-    t.string "choice"
   end
 
 end
