@@ -1,5 +1,8 @@
 require_relative '../config/enviroment'
 require 'pry'
+$prompt = TTY::Prompt.new
+
+
 
 def start
     @status = 'Egg'
