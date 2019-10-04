@@ -4,19 +4,11 @@ $prompt = TTY::Prompt.new
 
 
 def start
-    @status = 'Egg'
-    @win_count = 0
-    @streak = 0
-    @highest_streak = 0
+    
     puts "Welcome to RPS(Rock, Paper, Scissor)!!"
     @user_name = $prompt.ask("What is your name challenger!", default: 'Anonymous')
-    @u = User.create(name: @user_name)
-
-    @i = 0
-    while @i < 100 do
-        loop_fight
-        @i+=1
-    end
+    
+    main_menu
 end
  
 def negative(win_count)
@@ -30,7 +22,7 @@ def loop_fight
     menu.choice 'Rock', 1
     menu.choice 'Paper', 2
     menu.choice 'Scissor', 3
-    menu.choice 'Exit', 'x'
+    menu.choice 'Exit to Main Menu and Save', 'x'
     end
     fight(user_choice,ai_pick)
 end
@@ -84,14 +76,16 @@ def fight(user_wep,ai_wep)
         else
             @win_count -=1
         end
-        # overlord_streak
+        
         status
         message = "The champ's #{ai_w} has the advantage over #{@user_name}'s' #{user_w}."
         if @status == "OVERLORD"
             puts 'DEFEATED: YOURE NOW AN EGG'
+            if @highest_streak <= @streak
+                @highest_streak = @streak
+            end
             @status = 'Egg'
             @win_count = 0
-            @highest_streak = @streak
             @streak = 0
         end
         puts " "
@@ -101,9 +95,11 @@ def fight(user_wep,ai_wep)
         puts "Status: #{@status}"
         puts "Highest Streak: #{@highest_streak}"
     else
+        @u = User.create(name: @user_name)
         @s = Status.create(name: @status)
         Scoreboard.create(user_id: @u.id, status_id: @s.id, streak: @highest_streak)
         puts "Exiting out"
+        start
         @i += 100
         
     end
@@ -118,7 +114,7 @@ def getting_wep(weapon_num)
     elsif weapon_num == 3
         weapon = "Scissor"
     elsif weapon_num == 'x'
-        puts 'Thanks for playing! Your score is:'
+
     end
     weapon
 end
@@ -127,7 +123,57 @@ def streak
     if @win_count >= 4
         @streak +=1
     end
+end
 
+def main_menu
+
+    menu_choice = $prompt.select("#{@user_name} what would you like to do?") do |menu|
+    menu.choice 'Start Game', 1
+    menu.choice 'See High Score', 2
+    menu.choice 'Log Out', 3
+    menu.choice 'Close Game', 4
+    end
+
+    if menu_choice == 1 
+        start_game
+    elsif menu_choice == 2
+        top_5_score_board
+    elsif menu_choice == 3
+        start
+    elsif menu_choice == 4
+        end_game
+    end
+
+end
+
+def top_5_score_board
+    puts " "
+    puts "Nothing yet...."
+    # u1 = Scoreboard.find(user_id = 9)
+    # puts u1
+    start
+end
+
+def end_game
+    puts "Bye Bye ..."
+end
+
+def start_game
+    @status = 'Egg'
+    @win_count = 0
+    @streak = 0
+    @highest_streak = 0
+
+    @i = 0
+    while @i < 100 do
+        loop_fight
+        @i+=1
+    end
+    @u = User.create(name: @user_name)
+    @s = Status.create(name: @status)
+    Scoreboard.create(user_id: @u.id, status_id: @s.id, streak: @highest_streak)
+    puts "You used all your turns..."
+    start
 end
  
 start
