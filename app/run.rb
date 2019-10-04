@@ -4,9 +4,10 @@ $prompt = TTY::Prompt.new
 
 
 def start
-    
+    # db.execute "SELECT "
     puts "Welcome to RPS(Rock, Paper, Scissor)!!"
     @user_name = $prompt.ask("What is your name challenger!", default: 'Anonymous')
+ 
     puts "\e[H\e[2J"
     main_menu
 end
@@ -153,11 +154,26 @@ def main_menu
 end
 
 def top_5_score_board
-    puts " "
-    puts "Nothing yet...."
-    # u1 = Scoreboard.find(user_id = 9)
-    # puts u1
-    start
+
+    user_data = User.all.map {|user| user.name}
+    status_data = Status.all.map {|status| status.name}
+    sb_data = Scoreboard.all.map {|scoreboard| scoreboard.streak}
+    puts "\e[H\e[2J"
+    puts "Top 5 Highest OVERLORD Streak"
+    scoreboard_table = sb_data.zip([user_data.map(&:to_s), status_data.map(&:to_s)].transpose)
+    part1 = scoreboard_table.sort
+    part2 = []
+    k = 0
+    while k < 5
+        part2 << part1.pop
+        k += 1
+    end
+    h = 0
+    while h < 5
+        p part2[h]
+        h += 1
+    end
+    main_menu
 end
 
 def end_game
