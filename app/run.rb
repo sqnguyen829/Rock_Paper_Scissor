@@ -1,5 +1,7 @@
-require_relative '../config/enviroment'
+#require_relative '../config/enviroment'
 require 'pry'
+$prompt = TTY::Prompt.new
+
 
 def start
     @status = 'Egg'
@@ -7,11 +9,12 @@ def start
     @streak = 0
     @highest_streak = 0
     puts "Welcome to RPS(Rock, Paper, Scissor)!!"
-    @user_name = $prompt.ask("What is your name challenger!")
-    counter = 0
+    @user_name = $prompt.ask("What is your name challenger!", default: 'Anonymous')
+    @u = User.create(name: @user_name)
+
     @i = 0
     while @i < 100 do
-        loop_fight(counter)
+        loop_fight
         @i+=1
     end
 end
@@ -22,7 +25,7 @@ def negative(win_count)
     end
 end
  
-def loop_fight(counter)
+def loop_fight
     user_choice = $prompt.select("#{@user_name} choose your weapon!") do |menu|
     menu.choice 'Rock', 1
     menu.choice 'Paper', 2
@@ -59,6 +62,7 @@ def fight(user_wep,ai_wep)
 
     if user_w == ai_w
         status
+        puts " "
         puts "Both fighters weapons are #{user_w}!"
         puts "#{@user_name}'s and the champion's weapons cancel each other out!"
         puts "Win count: #{@win_count}"
@@ -68,6 +72,7 @@ def fight(user_wep,ai_wep)
         @win_count +=1
         status
         streak
+        puts " "
         puts "The #{@user_name}'s' #{user_w} has the advantage over the champ's #{ai_w}."
         puts "You win!"
         puts "Win count: #{@win_count}"
@@ -89,14 +94,18 @@ def fight(user_wep,ai_wep)
             @highest_streak = @streak
             @streak = 0
         end
+        puts " "
         puts "The champ's #{ai_w} has the advantage over #{@user_name}'s' #{user_w}."
         puts "You lose!"
         puts "Win count: #{@win_count}"
         puts "Status: #{@status}"
         puts "Highest Streak: #{@highest_streak}"
     else
-        puts "high score"
+        @s = Status.create(name: @status)
+        Scoreboard.create(user_id: @u.id, status_id: @s.id, streak: @highest_streak)
+        puts "Exiting out"
         @i += 100
+        
     end
 end
 
