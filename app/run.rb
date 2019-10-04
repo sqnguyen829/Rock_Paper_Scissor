@@ -7,7 +7,7 @@ def start
     
     puts "Welcome to RPS(Rock, Paper, Scissor)!!"
     @user_name = $prompt.ask("What is your name challenger!", default: 'Anonymous')
-    
+    puts "\e[H\e[2J"
     main_menu
 end
  
@@ -54,6 +54,7 @@ def fight(user_wep,ai_wep)
 
     if user_w == ai_w
         status
+        puts "\e[H\e[2J"
         puts " "
         puts "Both fighters weapons are #{user_w}!"
         puts "#{@user_name}'s and the champion's weapons cancel each other out!"
@@ -64,6 +65,7 @@ def fight(user_wep,ai_wep)
         @win_count +=1
         status
         streak
+        puts "\e[H\e[2J"
         puts " "
         puts "The #{@user_name}'s' #{user_w} has the advantage over the champ's #{ai_w}."
         puts "You win!"
@@ -78,6 +80,7 @@ def fight(user_wep,ai_wep)
         end
         
         status
+        puts "\e[H\e[2J"
         message = "The champ's #{ai_w} has the advantage over #{@user_name}'s' #{user_w}."
         if @status == "OVERLORD"
             puts 'DEFEATED: YOURE NOW AN EGG'
@@ -98,7 +101,8 @@ def fight(user_wep,ai_wep)
         @u = User.create(name: @user_name)
         @s = Status.create(name: @status)
         Scoreboard.create(user_id: @u.id, status_id: @s.id, streak: @highest_streak)
-        puts "Exiting out"
+        puts "\e[H\e[2J"
+        puts "Exited out"
         start
         @i += 100
         
@@ -137,8 +141,10 @@ def main_menu
     if menu_choice == 1 
         start_game
     elsif menu_choice == 2
+        puts "\e[H\e[2J"
         top_5_score_board
     elsif menu_choice == 3
+        puts "\e[H\e[2J"
         start
     elsif menu_choice == 4
         end_game
@@ -172,6 +178,7 @@ def start_game
     @u = User.create(name: @user_name)
     @s = Status.create(name: @status)
     Scoreboard.create(user_id: @u.id, status_id: @s.id, streak: @highest_streak)
+    puts "\e[H\e[2J"
     puts "You used all your turns..."
     start
 end
