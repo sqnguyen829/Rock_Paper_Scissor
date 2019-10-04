@@ -196,7 +196,6 @@ def start_game
     Scoreboard.create(user_id: @u.id, status_id: @s.id, streak: @highest_streak)
     puts "\e[H\e[2J"
     puts "You used all your turns..."
-    start
+    main_menu
 end
- 
 start
