@@ -1,3 +1,5 @@
 # Rock_Paper_Scissor
 
 To run the game inside the terminal type ruby config/enviroment.rb but make sure the gems are installed first.
+
+This game is based of off an icebreaker game our cohort played during the first week of mod 1. When the game starts the user will be asked for a username to startbthe game. After inputting a name the user has 4 options start the game, see the scoreboard, logout and close the game. The scoreboard keeps track of a players win streak after reaching OVERLORD status. The mechanic behind the game is the user pick from one of the 3 options paper/rock/scissor, the AI will then pick their own paper/rock/scissor. The user status will change depending on if they win against the AI, once the user reaches OVERLORD, the game will then start checking to thier wins to start recording their streak count. If the user loses at any point during their streak in OVERLORD status they are then resetted back to an egg. The Player's data will only save after the player reaches 1000 times of paper/rock/scissor or they choose to end the game by exiting the game and saving.
